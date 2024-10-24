@@ -40,103 +40,51 @@ npm run build
 ```
 yarn build
 ```
-Архитектура(в 9 ПР работе ЕР-модель доделается с учетом API):
+
+Архитектура
+
+### ЕR-модель:
 ![alt text](PR8.jpg)
 
-Данные и типы данных:
--Интерфейс для данных каточки товара (в таком виде данные приходят с сервера).
+### 1. Класс EventEmitter
+ 
+Реализует паттерн «Наблюдатель» и позволяет подписываться на события и уведомлять о наступлении события.
+Класс имеет методы `on` ,  `off` ,  `emit`  — для подписки на событие, отписки от события и уведомления подписчиков о наступлении события соответственно.
+Дополнительно реализованы методы  `onAll` и  `offAll`  — для подписки на все события и сброса всех подписчиков.
 
-```
-interface ICard {
-  id: string;
-  description: string;
-  image: string;
-  title: string;
-  category: string;
-  price: number; 
-}
-```
--Интерфейс для модели данных карточек(товаров).
-```
-interface ICardsData {
-  set cards(cards: ICard[]);
-  get cards(): ICard[];
-  getCard(id: string): ICard | undefined;
-}
-```
--Интерфейс для модели данных корзины.
-```
-interface IBasketModel {
-  add(item: ICard): void;
-  remove(id: string): void;
-  clear(): void;
-  getTotal(): number;
-  getTotalPrice(): number;
-  getIds(): string[];
-  isEmpty(): boolean;
-  contains(id: string): boolean;
-}
-```
--Тип данных метода оплаты.
-```
-type TPaymentMethod = '' | 'card' | 'cash';
-```
--Интерфейс данных заказа.
-```
-interface IOrderDetails {
-  payment: TPaymentMethod;
-  email: string;
-  phone: string;
-  address: string;
-}
-```
--Интерфейс для модели данных заказа.
-```
-interface IOrderModel {
-  set payment(payment: TPaymentMethod); 
-  set email(email: string);
-  set phone(phone: string);
-}
-```
+### 2. Класс Api
 
--Интерфейс для отображения главной страницы.
-```
-interface IPage {
-  set counter(value: number);
-  set catalog(items: HTMLElement[]);
-  set locked(value: boolean);
-  get basket(): HTMLElement;
-}
-```
--Интерфейс для отображения модального окна.
-```
-interface IModal {
-  set content(value: HTMLElement)
-	open(): void;
-	close(): void;
-}
-```
--Интерфейс для отображения карточки.
-```
-interface ICardView {
-  render(data: ICard, index?: number, basketIds?: string[]): HTMLElement;
-}
-```
--Интерфейс для отображения корзины.
-```
-interface IBasketView {
-  render(data: { items: HTMLElement[]; price: number; isEmpty: boolean }): HTMLElement;
-}
-```
--Интерфейс для отображения форм.
-```
-interface IFormView {
-  render(...args: any[]): HTMLElement;
-}
-```
--Интерфейс для отображения успешного заказа.
-```
-interface ISuccess {
-  render(total: number): HTMLElement;
-}
-```
+Данный класс осуществляет работу с базовыми запросами к серверу (GET, POST, PUT, DELETE) и занимается обработкой ответов, полученных от сервера.
+Класс имеет методы: 
+`get` и `post` - для выполнения самх запросов к серверу, 
+`handleRespons` - для обработки ответа сервера, его парсинга и обработки ошибок.
+
+### 3. Класс Component
+
+Базовый класс, который наследуется всеми компонентами - страница, корзина, карточки товаров, модальные окна. Назначение - создание HTML элементов и управление их свойствами.
+В состав класса входят методы:
+`toggleClass` - для переключения класса конкретного DOM-элемента,
+`setImage` - для установки изображения (src) и альтернативного текста (alt) для конкретного DOM-элемента,
+`setVisible` - для показа конкретного DOM-элемента,
+`setHidden` - для скрытия конкретного DOM-элемента,
+`setText` - для установки текста в свойство textContent конкретного DOM-элемента,
+`setDisabled` - для "отключения" переданного DOM-элемента,
+`render` - для генерации компонента и "отрисовки" его в разметке.
+
+### 4. Класс Model
+Базовый класс, предназначенный для создания модельных данных, используемых для управления данными приложения. Напрямую "общается" с EventEmitter, принимая в конструктор данные модели и аргумент `events`.
+Включает в себя только один метод:
+`emitChanges` - для сообщения всем подписчикам о том, что модель изменилась. 
+
+## Компоненты модели данных
+В процессе реализации
+
+## Компоненты представления
+Возможные классы для реализации в будущем:
+_класс Basket - корзина товара/товаров,
+_класс Card - карточка товара,
+_класс Form - форма оформления заказа (поля ввода, валидация формы, подтверждения),
+_класс Modal - универсальное модальное окно,
+_класс Success - отображает информационное сообщение об успешной покупке,
+_класс Page - для отображения элементов страницы (карточек товара, корзины и т.д.).
+

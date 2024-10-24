@@ -1,73 +1,54 @@
- interface ICard {
-    id: string;
-    description: string;
-    image: string;
-    title: string;
-    category: string;
-    price: number; 
-  }
-  
-interface ICardsData {
-    get cards(): ICard[];
-    set cards(cards: ICard[]);
-    getCard(id: string): ICard | undefined;
-  }
-  
-interface IBasketModel {
-    add(item: ICard): void;
-    remove(id: string): void;
-    clear(): void;
-    getTotal(): number;
-    getTotalPrice(): number;
-    getIds(): string[];
-    isEmpty(): boolean;
-    contains(id: string): boolean;
-    items: ICard[];
-  }
+type CardId = string; 
 
-interface IOrderModel {
-    set payment(payment: TPaymentMethod); 
-    set email(email: string);
-    set phone(phone: string);
-    set address(address: string);
-  }
-  
-type TPaymentMethod = '' | 'card' | 'cash';
-  
-interface IOrderDetails {
-    payment: TPaymentMethod;
-    email: string;
-    phone: string;
-    address: string;
-  }
-  
-interface IPage {
-    set counter(value: number);
-    set catalog(items: HTMLElement[]);
-    set locked(value: boolean);
-    get basket(): HTMLElement;
-  }
-  
-interface IModal {
-    set content(value: HTMLElement);
-      open(): void;
-      close(): void;
-  }
-  
-interface ICardView {
-    render(data: ICard, index?: number, basketIds?: string[]): HTMLElement;
-  }
-  
-interface IBasketView {
-    render(data: { items: HTMLElement[]; price: number; isEmpty: boolean }): HTMLElement;
-  }
-  
-interface IFormView {
-    render(...args: any[]): HTMLElement;
-  }
-  
-interface ISuccess {
-    render(total: number): HTMLElement;
-  }
-  
-type TApiSuccessResp = {id: string, total: number}
+//Интерфейсы базовых классов
+export type EventName = string | RegExp;
+export type Subscriber = Function;
+export type EmitterEvent = {
+    eventName: string,
+    data: unknown
+};
+export interface IEvents {
+    on<T extends object>(event: EventName, callback: (data: T) => void): void;
+    emit<T extends object>(event: string, data?: T): void;
+    trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
+}
+export type ApiListResponse<Type> = {
+    total: number,
+    items: Type[]
+};
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
+
+//Интерфейсы моделей данных
+//Интерфейсы компонентов представления
+
+export interface ICard {
+    id: CardId,
+    description: string,
+    image: string,
+    title: string,
+    category: string,
+    price: number | null,
+}
+export interface IOrder {
+    payment: string,
+    email: string,
+    phone: string,
+    address: string,
+    total: number | null,
+    items: CardId[],
+}
+export interface IOrderSuccess {
+    id: string, //uuid?
+    total: number | null,
+}
+export interface ISuccess {
+    image: string,
+    title: string,
+    description: string,
+    total: number | null,
+}
+export interface IBasket {
+    items: HTMLElement[];
+    total: number;
+}
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
