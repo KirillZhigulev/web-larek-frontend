@@ -38,7 +38,7 @@ export interface IOrder {
     items: CardId[],
 }
 export interface IOrderSuccess {
-    id: string, //uuid?
+    id: string, 
     total: number | null,
 }
 export interface ISuccess {
