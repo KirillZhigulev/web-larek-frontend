@@ -152,7 +152,7 @@ _класс Page - для отображения элементов страни
 
 ## Ключевые типы данных
 
-//Типы и интерфейсы базовых классов
+// Типы и интерфейсы базовых классов
 
 ```
 export type EventName = string | RegExp;
@@ -163,53 +163,65 @@ export type EmitterEvent = {
 };
 ```
 
-
-`interface IEvents {
+```
+interface IEvents {
     on<T extends object>(event: EventName, callback: (data: T) => void): void;
     emit<T extends object>(event: string, data?: T): void;
     trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
-  }`
+  }
+```
+// Ответ от сервера
 
-//Ответ от сервера
-
-`type ApiListResponse<Type> = {
+```
+type ApiListResponse<Type> = {
   total: number,
   items: Type[]
-};`
+};
+```
 
-//Запросы на сервер
+// Запросы на сервер
 
-`type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';`
+```
+type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
+
+```
 
 
-//Методы для Api
+// Методы для Api
 
-`interface ILarekApi {
+```
+interface ILarekApi {
     getCardsList: () => Promise<ICard[]>;
     // getCard: (id: string) => Promise<ICard>;
     orderProducts: (order: IOrder) => Promise<IOrderSuccess>
-  }`
+  }
+```
   
-//Интерфейсы моделей данных
+// Интерфейсы моделей данных
 
-`interface IAppStatus {
+```
+interface IAppStatus {
     catalog: ICard[];
     basket: ICard[];
     preview: string | null;
     delivery: IOrdersDelivery | null;
     contact: IOrdersContacts | null;
     order: IOrder | null;
-  }`
+  }
 
-//Интерфейсы компонентов представления
+```
+// Интерфейсы компонентов представления
 
-`interface IPage {
+```
+interface IPage {
     counter: number;
     catalog: HTMLElement[];
     locked: boolean;
-}`
+}
+```
 
-`interface ICard {
+```
+interface ICard {
     id: string,
     description: string,
     image: string,
@@ -218,46 +230,60 @@ export type EmitterEvent = {
     price: number | null,
     count?: string,
     buttonText? : string;
-}`
+}
 
-`interface IOrdersDelivery {
+```
+
+```
+interface IOrdersDelivery {
     payment: string,
     address: string,
-}`
+}
+```
 
-`interface IOrdersContacts {
+```
+interface IOrdersContacts {
     email: string,
     phone: string,
-}`
+}
 
-`interface IOrder extends IOrdersDelivery, IOrdersContacts {
+```
+```
+interface IOrder extends IOrdersDelivery, IOrdersContacts {
     total: number | null,
     items: string[],
-}`
+}```
 
-`interface IOrderSuccess {
+```
+interface IOrderSuccess {
     id: string,
     total: number | null,
-}`
-
-`interface ISuccess {
+}
+```
+```
+interface ISuccess {
     image: string,
     title: string,
     description: string,
     total: number | null,
-}`
-
-`interface IBasket {
+}
+```
+```
+interface IBasket {
     items: HTMLElement[];
     total: number;
-}`
-
-`type FormErrors = Partial<Record<keyof IOrder, string>>;`
-
-`interface IActions {
+}
+```
+```
+type FormErrors = Partial<Record<keyof IOrder, string>>;
+```
+```
+interface IActions {
     onClick: (event: MouseEvent) => void;
-}`
-
-`interface ISuccessActions {
+}
+```
+```
+interface ISuccessActions {
     onClick: () => void;
-}`
+}
+```
