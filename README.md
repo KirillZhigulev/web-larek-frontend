@@ -44,7 +44,7 @@ yarn build
 Архитектура
 
 ЕR-модель:
-![alt text](PR8.jpg)
+![alt text](ERMPfinall.jpg)
 
 1. Класс Api
 
