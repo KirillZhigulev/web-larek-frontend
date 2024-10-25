@@ -231,7 +231,6 @@ interface ICard {
     count?: string,
     buttonText? : string;
 }
-
 ```
 
 ```
@@ -246,13 +245,14 @@ interface IOrdersContacts {
     email: string,
     phone: string,
 }
-
 ```
+
 ```
 interface IOrder extends IOrdersDelivery, IOrdersContacts {
     total: number | null,
     items: string[],
-}```
+}
+```
 
 ```
 interface IOrderSuccess {
@@ -260,6 +260,7 @@ interface IOrderSuccess {
     total: number | null,
 }
 ```
+
 ```
 interface ISuccess {
     image: string,
@@ -268,20 +269,25 @@ interface ISuccess {
     total: number | null,
 }
 ```
+
 ```
 interface IBasket {
     items: HTMLElement[];
     total: number;
 }
 ```
+
 ```
 type FormErrors = Partial<Record<keyof IOrder, string>>;
+
 ```
+
 ```
 interface IActions {
     onClick: (event: MouseEvent) => void;
 }
 ```
+
 ```
 interface ISuccessActions {
     onClick: () => void;
