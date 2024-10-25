@@ -154,12 +154,15 @@ _класс Page - для отображения элементов страни
 
 //Типы и интерфейсы базовых классов
 
-`export type EventName = string | RegExp;
+```
+export type EventName = string | RegExp;
 export type Subscriber = Function;
 export type EmitterEvent = {
     eventName: string,
     data: unknown
-};`
+};
+```
+
 
 `interface IEvents {
     on<T extends object>(event: EventName, callback: (data: T) => void): void;
