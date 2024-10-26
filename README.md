@@ -204,99 +204,103 @@ interface ILarekApi {
   }
 ```
   
-// Интерфейсы моделей данных
+## Компоненты представления
 
-```
-interface IAppStatus {
-    catalog: ICard[];
-    basket: ICard[];
-    preview: string | null;
-    delivery: IOrdersDelivery | null;
-    contact: IOrdersContacts | null;
-    order: IOrder | null;
-  }
+1. Класс Page
+Класс представления всей страницы. Позволяет задать:
 
-```
-// Интерфейсы компонентов представления
+_counter: HTMLElement- элемент отображения количества товаров в корзине
+_catalog: HTMLElement- элемент отображения всех доступных карточек
+_wrapper: HTMLElement - обёртка, позволяющая блокировать прокрутку страницы при открытии модального окна
+_basket: HTMLButtonElement- кнопка для отображения корзины. Клик по кнопке вызывает событие basket:open
+Методы:
 
-```
-interface IPage {
-    counter: number;
-    catalog: HTMLElement[];
-    locked: boolean;
-}
-```
+set counter - Устанавливаем количество лотов в корзине
+set catalog - Обновляем список карточек
+set locked - Обрабатываем блокировку страницы
 
-```
-interface ICard {
-    id: string,
-    description: string,
-    image: string,
-    title: string,
-    category: string,
-    price: number | null,
-    count?: string,
-    buttonText? : string;
-}
-```
+2. Класс Modal
+Класс представления модального окна. Позволяет задать
 
-```
-interface IOrdersDelivery {
-    payment: string,
-    address: string,
-}
-```
+_content: HTMLElement - для отображения внутреннего содержания модального окна
+_closeButton: HTMLButtonElement - для отображения кнопки закрытия модального окна
+Привязывает события закрытие модального окна (modal:close) к кликам по кнопке закрытия формы и по родительскому контейнеру модального окна
 
-```
-interface IOrdersContacts {
-    email: string,
-    phone: string,
-}
-```
+Методы:
 
-```
-interface IOrder extends IOrdersDelivery, IOrdersContacts {
-    total: number | null,
-    items: string[],
-}
-```
+set content
+open(): void- Показываем модальное окно
+close(): void- Закрываем модальное окно
+render(data: IModalData): HTMLElement - Используется для сбора окна
 
-```
-interface IOrderSuccess {
-    id: string,
-    total: number | null,
-}
-```
+3. Класс Basket
+Класс представления корзины. Позволяет задать:
 
-```
-interface ISuccess {
-    image: string,
-    title: string,
-    description: string,
-    total: number | null,
-}
-```
+_list: HTMLElement - список отображаемых элементов в корзине
+_total: HTMLElement - общую ценность корзины
+_button: HTMLButtonElement - кнопку открытия формы оформления заказа.
+Методы:
 
-```
-interface IBasket {
-    items: HTMLElement[];
-    total: number;
-}
-```
+set items - используется для добавления карточки в корзине
+set total - устанавливается значение общей суммы товаров корзины
+set valid - если товаров нет, будет заблокирована кнопка оформления заказа.
 
-```
-type FormErrors = Partial<Record<keyof IOrder, string>>;
+4. Класс Card
+_title: HTMLElement - элемент отображения названия 
+_image: HTMLImageElement - элемент отображеня изображения
+_description: HTMLElement - элемент отображения описания
+_button: HTMLButtonElement - элемент отображения  кнопки
+_price: HTMLElement - элемент отображения стоимости
+_category: HTMLElement - элемент отображения категории
+Методы:
 
-```
+set category - установка категории
+set title - установка названия карточки
+set image - утсановка картинка карточки
+set description - установка описания карточки
+set price - установка цены
+set button - установка текста на кнопке
 
-```
-interface IActions {
-    onClick: (event: MouseEvent) => void;
-}
-```
 
-```
-interface ISuccessActions {
-    onClick: () => void;
-}
-```
+5. Класс Form<T>
+Класс представления базовой формы. Позволяет задать:
+
+_submit: HTMLButtonElement - кнопку отправки формы
+_errors: HTMLElement - блок отображения ошибок в форме
+Методы:
+
+set valid - сеттер для блокировки кнопки, если в поле нет данных;
+set errors - сеттер для установки текстового значения ошибки;
+
+6. Класс OrdersDelivery
+Класс представления, наследующийся от класса Form, для отображения формы оформления заказа с информацией об способе оплаты с адресом доставки. Задаются следующие свойства:
+
+payment - способ оплаты
+address - адрес доставки
+_paymentContainer: HTMLDivElement
+_paymentButtons: HTMLButtonElement[]
+Методы:
+
+set payment - имеет тип string, используется для добавления способа оплаты
+set address - имеет тип string, используется для добавления адресса
+setClassPaymentMethod(className: string): void -  управление стилем кнопки в зависимости от выбранного способа оплаты
+
+7. Класс OrdersContacts
+Класс представления, наследующийся от класса Form, для отображения формы оформления заказа с контактной информацией. Задаются следующие свойства:
+
+email - почта для связи
+phone - телефон для связи
+Методы:
+
+set phone - имеет тип string, используется для добавления телефона
+set email - имеет тип string, используется для добавления емайла
+
+8. Класс Success
+Класс представления, определяющий отображение основной информации об оформленном заказе:
+
+total - общая сумма заказа (забираем из ответа сервера)
+_close: HTMLElement - Элемент для закрытия страницы
+_total: HTMLElement - Элемент для отображения общей стоимости заказа
+Метод:
+
+set total - установка общей стоимости заказа
