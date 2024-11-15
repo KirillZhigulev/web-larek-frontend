@@ -1,4 +1,5 @@
 //Типы и интерфейсы базовых классов
+
 export type EventName = string | RegExp;
 export type Subscriber = Function;
 export type EmitterEvent = {
@@ -13,16 +14,19 @@ export interface IEvents {
   }
 
 //Ответ от сервера
+
 export type ApiListResponse<Type> = {
   total: number,
   items: Type[]
 };
 
 //Запросы на сервер
+
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
 
 //Методы для Api
+
 export interface ILarekApi {
     getCardsList: () => Promise<ICard[]>;
     // getCard: (id: string) => Promise<ICard>;
@@ -30,6 +34,7 @@ export interface ILarekApi {
   }
   
 //Интерфейсы моделей данных
+
 export interface IAppStatus {
     catalog: ICard[];
     basket: ICard[];
